@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "bk5rVkB5PD9kiqUDYAPyzCL/kKkgzAUuVrWkcl5Z7tVtAh+RNiqxKr/ZjguH9g62irf4aRjHOtTyydgLDEvn0A==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\fujit\\source\\repos\\OhayoPlugin\\OhayoPlugin\\OhayoPlugin.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\fujit\\.nuget\\packages\\exiled\\8.8.1\\exiled.8.8.1.nupkg.sha512"
+  ],
+  "logs": []
+}
