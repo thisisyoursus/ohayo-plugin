@@ -14,38 +14,39 @@ using PlayerRoles.RoleAssign;
 
 namespace AddCandy
 {
-    public class AddCandy
+    public class AddCandy : Addcandy.Plugin
     {
         private Config _Config = new Config();
 
+
         public void OnSpawned(SpawnedEventArgs ev)
         {
-            if (_Config.IsAllowAddCandy && ev.Player != null && ev.Player.Role != null)
+            if (_Config.IsAllowAddCandy || ev.Player != null)
             {
-                if (ev.Player.Role.Side == null && ev.Player.Role.Type != RoleTypeId.Spectator)
-                {
-                    return;
-                }
 
-                Exiled.API.Features.Items.Scp330 scp330 = (Exiled.API.Features.Items.Scp330)Item.Create(ItemType.SCP330, ev.Player);
-                if (scp330 == null)
-                {
-                    Exiled.API.Features.Log.Error("Failed to create SCP-330 item.");
-                    return;
-                }
 
+                Exiled.API.Features.Items.Scp330 scp330 =
+                    (Exiled.API.Features.Items.Scp330)Item.Create(ItemType.SCP330, (Exiled.API.Features.Player)null);
                 Random random = new Random();
-                CandyKindID[] array = Enum.GetValues(typeof(CandyKindID)) as CandyKindID[];
-                array = Array.FindAll(array, c => c != CandyKindID.None && c != CandyKindID.Pink);
-
-                for (int index = 0; index < 6; index++)
+                CandyKindID[] array = ((IEnumerable<CandyKindID>)(Enum.GetValues(typeof(CandyKindID)) as CandyKindID[]))
+                    .Where<CandyKindID>((Func<CandyKindID, bool>)(c => c != CandyKindID.None && c != CandyKindID.Pink))
+                    .ToArray<CandyKindID>();
+                for (int index = 0; index < 6; ++index)
                 {
                     CandyKindID candyKindId = array[random.Next(array.Length)];
                     scp330.AddCandy(candyKindId);
                 }
 
-                ev.Player.AddItem((Item)scp330); ;
+                if (ev.Player.Role.Side != null || ev.Player.Role == RoleTypeId.Spectator)
+                {
+                    ev.Player.AddItem((Item)scp330);
+                }
+                else
+                {
+                    return;
+                }
             }
+
         }
     }
 }
